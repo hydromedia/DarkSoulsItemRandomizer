@@ -64,10 +64,12 @@ DESC_DICT = {
         False: "* The Lordvessel IS NOT included in the randomized keys.\n   Difficulty is standard. Lordvessel is given by Gwynevere in Anor Londo.\n"},
     "use_lord_souls": {True: "* The 4 Lord Souls ARE included in the randomized keys.\n   Difficulty ranges from much easier to much harder.\n", 
         False: "* The 4 Lord Souls ARE NOT included in the randomized keys.\n   Difficulty is standard. Lord Souls are dropped by their normal bosses.\n"},
-    "ascend_weapons": {True: "* Normal weapons have a 25% chance to be ascended with a random ember.\n\n",
-        False: "* Normal weapons drop as expected.\n\n"}
+    "pirate_weapons": {True: "* Pirate weapons have a 50% chance to be ascended with a random ember.\n\n",
+        False: "* Pirate weapons drop as expected.\n\n"},
+    "ninja_weapons": {True: "* Ninja weapons have a 50% chance to be ascended with a random ember.\n\n",
+            False: "* Ninja weapons drop as expected.\n\n"}
 }
-DESC_ORDER = ["diff", "key_diff", "souls_diff", "start_items", "fashion", "npc_armor", "use_lv", "use_lord_souls", "ascend_weapons"]
+DESC_ORDER = ["diff", "key_diff", "souls_diff", "start_items", "fashion", "npc_armor", "use_lv", "use_lord_souls", "pirate_weapons", "ninja_weapons"]
 
 
 
@@ -283,21 +285,30 @@ class MainGUI:
         self.lord_soul_check.grid(row=6, column=4, sticky='W')
         self.setup_hover_events(self.lord_soul_check, {"use_lord_souls": None}, no_emph = True)
 
-        self.ascend_weapons_bool = tk.BooleanVar()
-        self.ascend_weapons_bool.set(ini_parser.get_option_value(init_options, "ascend_weapons"))
-        self.ascend_weapons_bool.trace('w', lambda name, index, mode: self.update())
-        self.ascend_weapons_check = tk.Checkbutton(self.root, text="Eager Smiths", 
-         variable=self.ascend_weapons_bool, onvalue=True, offvalue=False, padx=2,
+        self.pirate_weapons_bool = tk.BooleanVar()
+        self.pirate_weapons_bool.set(ini_parser.get_option_value(init_options, "pirate_weapons"))
+        self.pirate_weapons_bool.trace('w', lambda name, index, mode: self.update())
+        self.pirate_weapons_check = tk.Checkbutton(self.root, text="Pirate Weapons",
+         variable=self.pirate_weapons_bool, onvalue=True, offvalue=False, padx=2,
          width=20, anchor=tk.W)
-        self.ascend_weapons_check.grid(row=7, column=4, sticky='W')
-        self.setup_hover_events(self.ascend_weapons_check, {"ascend_weapons": None}, no_emph = True)
+        self.pirate_weapons_check.grid(row=7, column=4, sticky='W')
+        self.setup_hover_events(self.pirate_weapons_check, {"pirate_weapons": None}, no_emph = True)
+
+        self.ninja_weapons_bool = tk.BooleanVar()
+        self.ninja_weapons_bool.set(ini_parser.get_option_value(init_options, "ninja_weapons"))
+        self.ninja_weapons_bool.trace('w', lambda name, index, mode: self.update())
+        self.ninja_weapons_check = tk.Checkbutton(self.root, text="Ninja Weapons",
+         variable=self.ninja_weapons_bool, onvalue=True, offvalue=False, padx=2,
+         width=20, anchor=tk.W)
+        self.ninja_weapons_check.grid(row=8, column=4, sticky='W')
+        self.setup_hover_events(self.ninja_weapons_check, {"ninja_weapons": None}, no_emph = True)
         
         self.export_button = tk.Button(self.root, text="Scramble Items &\nExport to GameParam", 
          padx=10, pady=10, command=self.export_to_gameparam)
-        self.export_button.grid(row=8, rowspan=3, column=4, padx=2, sticky='EW')
+        self.export_button.grid(row=9, rowspan=3, column=4, padx=2, sticky='EW')
         
         self.cheat_button = tk.Button(self.root, text="Write Seed Cheatsheet", command=self.export_seed_info)
-        self.cheat_button.grid(row=11, rowspan=1, column=4, sticky='EW', padx=2, pady=2)
+        self.cheat_button.grid(row=12, rowspan=1, column=4, sticky='EW', padx=2, pady=2)
         
         self.update_desc()
         self.detect_game_version()
@@ -377,7 +388,8 @@ class MainGUI:
             "npc_armor": (self.npc_armor_bool.get(), DescriptionState.NORMAL),
             "use_lv": (self.use_lordvessel.get(), DescriptionState.NORMAL),
             "use_lord_souls": (self.use_lord_souls.get(), DescriptionState.NORMAL),
-            "ascend_weapons": (self.ascend_weapons_bool.get(), DescriptionState.NORMAL)
+            "pirate_weapons": (self.pirate_weapons_bool.get(), DescriptionState.NORMAL),
+            "ninja_weapons": (self.ninja_weapons_bool.get(), DescriptionState.NORMAL)
         }
         return DescriptionState(desc_specifiers, self.desc_area)
         
@@ -445,7 +457,7 @@ class MainGUI:
         options = rngopts.RandomizerOptions(self.diff.get(), self.fashion_bool.get(), 
          self.key_diff.get(), self.use_lordvessel.get(), self.use_lord_souls.get(), 
          self.soul_diff.get(), self.start_items_diff.get(), self.game_version.get(),
-         self.npc_armor_bool.get(), self.ascend_weapons_bool.get())
+         self.npc_armor_bool.get(), self.pirate_weapons_bool.get(), self.ninja_weapons_bool.get())
 
         if self.save_options.get():
             ini_parser.save_ini(INI_FILE, options)        #save options right before creating seed
@@ -741,9 +753,7 @@ class MainGUI:
         except:
             pass
 
-
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.WARN)
     maingui = MainGUI()
     maingui.root.mainloop()
-    

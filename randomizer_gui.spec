@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['randomizer_gui.py'],
-             pathex=['C:\\Users\\ekrechmer\\DarkSoulsItemRandomizer'],
+             pathex=['C:\\git-repos\\DarkSoulsItemRandomizer'],
              binaries=[],
              datas=[('favicon.ico', '.'), ('favicon.gif', '.')],
              hiddenimports=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='DarkSoulsItemRandomizer',
+          name='PiratesVsNinjasDSRando',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
